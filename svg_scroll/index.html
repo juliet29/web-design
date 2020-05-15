@@ -1,0 +1,72 @@
+<!-- based on this tutorial by Design Course https://www.youtube.com/watch?v=M8Gq_HPDXsU&list=PLYuIgyTXbL_y34F1YlzoGOj2C1LRt-ICg&index=4&t=189s -->
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>SVG_Scroll</title>
+	</head>
+	<link rel="stylesheet" href="css/main.css" />
+	<body>
+		<section>
+			<h1 class="anim">Yo, you see this</h1>
+		</section>
+		<section>
+			<img class="anim" src="image.jpg" alt="bird" />
+			<h1 class="anim">Its cool bruh</h1>
+		</section>
+		<section>
+			<h1 class="anim">I know right</h1>
+		</section>
+
+		<svg viewBox="0 0 497.06 560">
+			<style type="text/css">
+				.text {
+					text-transform: uppercase;
+					font-weight: bold;
+					fill: #e6e6e6;
+				}
+			</style>
+			<path
+				id="our-text"
+				fill="#fff"
+				d="M25.29 139.84v276.61h445.97V139.84H63.36"
+			/>
+			<text y="40" font-size="30" font-family="Helvetica, Arial">
+				<textpath id="text-path" class="text" href="#our-text">
+					Yeah, let me check it out real quick
+				</textpath>
+			</text>
+		</svg>
+
+		<!--Javascript-->
+		<script>
+			// make the text scroll around the paths
+			var textPath = document.querySelector("#text-path");
+			function updateTextPathOffset(offset) {
+				textPath.setAttribute("startOffset", offset);
+			}
+			function onScroll() {
+				requestAnimationFrame(function () {
+					updateTextPathOffset(window.scrollY * 0.3);
+				});
+			}
+			window.addEventListener("scroll", onScroll);
+
+			//  animate the headers
+			const titles = document.querySelectorAll(".anim");
+			// have to use for each since there are multiple H1 elements with the .anim class
+			observer = new IntersectionObserver((entries) => {
+				entries.forEach((entry) => {
+					if (entry.isIntersecting == true) {
+						entry.target.classList.add("animate");
+					} else {
+						entry.target.classList.remove("animate");
+					}
+				});
+			});
+			// isIntersecting (from console.log(entry)) will become true when a 'title' comes into view
+			titles.forEach((title) => observer.observe(title));
+		</script>
+	</body>
+</html>
